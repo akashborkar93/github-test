@@ -3,7 +3,7 @@ name: my_workflows
 on: push
 
 jobs: 
-    first_job:
+    build_job1:
         runs-on: ubuntu-24.04
         steps: 
         - name: Checkout-repo
@@ -15,12 +15,22 @@ jobs:
         - name: Execute cowsay CMD
           run: cowsay -f dragon "RUN for cover...I am dragon" >> dragon.txt
 
-        - name: Test File exist
+        - name: Upload dragon text file
+          uses: actions/upload-artifact@v3
+          with:
+            name: dragon-text-file
+            path: dragon.txt
+    test_job2:
+        needs: build_job1
+        runs-on: ubuntu-24.04
+        steps:
+        - name: sleep for 10 second
+          run: sleep 10
+
+        - name: download dragon text file
+          uses: actions/download-artifact@v3
+          with:
+              name: dragon-text-file
+              path: dragon.txt
+        - name: Test file Exists
           run: grep -i "dragon" dragon.txt
-
-        - name: read file
-          run: cat dragon.txt
-
-        - name: list
-          run: ls -ltra
-            
