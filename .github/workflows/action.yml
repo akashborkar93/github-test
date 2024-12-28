@@ -24,13 +24,9 @@ jobs:
         needs: build_job1
         runs-on: ubuntu-24.04
         steps:
-        - name: sleep for 10 second
-          run: sleep 10
-
         - name: download dragon text file
           uses: actions/download-artifact@v3
           with:
               name: dragon-text-file
-              path: dragon.txt
         - name: Test file Exists
           run: grep -i "dragon" dragon.txt
